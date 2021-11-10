@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Client_user;
+use App\Models\Tag;
 
 class TagsController extends Controller
 {
@@ -13,7 +16,11 @@ class TagsController extends Controller
      */
     public function index()
     {
-        return view('contacts.tags.index');
+        $user_id = Auth::id();
+        $client = Client_user::where('user_id', $user_id)->first();
+        $client_id = $client->client_id;
+        $tags = Tag::where('client_id', $client_id)->with(['contacts'])->get();
+        return view('contacts.tags.index', compact('tags'));
     }
 
     /**
@@ -34,7 +41,11 @@ class TagsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user_id = Auth::id();
+        $client = Client_user::where('user_id', $user_id)->first();
+        $client_id = $client->client_id;
+        Tag::create(array_merge($request->all(), ['client_id' => $client_id]));
+        return back()->withStatus('Tag added successfully');
     }
 
     /**

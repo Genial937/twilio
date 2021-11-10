@@ -47,20 +47,24 @@
                             <thead>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Email</th>
                                 <th>Phone</th>
-                                <th>Apps</th>
+                                <th>Tag</th>
                                 <th>Action</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                               @php($count = 1)
+                               @foreach ($contacts as $contact)
+                               <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $contact->name }}</td>
+                                <td>{{ $contact->phone }}</td>
+                                <td>{{ $contact->tags->tag_name }}</td>
+                                <td>
+                                    <a href="#" data-toggle="modal" data-target="#edit{{ $contact->id }}" class="btn btn-success btn-sm"><i class="fa fa-pencil"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                               @endforeach
                             </tbody>
                         </table>
                     </div>

@@ -39,36 +39,26 @@
             <div class="col-md-8 offset-md-2">
                 <div class="card shadow">
                     <div class="card-header">
-                        <h2 class="card-title">Add Contact</h2>
+                        <h2 class="card-title">Import Contacts From Excel</h2>
                         <a href="{{ route('contacts.index') }}" class="btn btn-success pull-right">Back</a>
                     </div>
                     <div class="card-body">
                         <form action="">
                             <div class="form-group">
-                                <label for="">Name</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Email</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Phone</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Role</label>
-                                <select name="" id="" class="form-control">
-                                    <option value="" selected>Select</option>
+                                <label for="">Tag</label>
+                                <select name="tag_id" id="" class="form-control" required>
+                                    <option value="" selected disabled>Select</option>
+                                    @foreach ($tags as $item)
+                                        <option value="{{ $item->id }}">{{ $item->tag_name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="">Password</label>
-                                <input type="password" class="form-control">
+                                <label for="">File (In the format: name, phone)</label>
+                                <input type="file" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label for="">Confirm Password</label>
-                                <input type="password" class="form-control">
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </form>
                     </div>

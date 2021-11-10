@@ -36,40 +36,28 @@
     <!-- CARDS -->
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8 offset-md-2">
+            <div class="col-md-6 offset-md-3">
                 <div class="card shadow">
                     <div class="card-header">
                         <h2 class="card-title">Add Tag</h2>
                         <a href="{{ route('tags.index') }}" class="btn btn-success pull-right">Back</a>
                     </div>
                     <div class="card-body">
-                        <form action="">
-                            <div class="form-group">
-                                <label for="">Name</label>
-                                <input type="text" class="form-control">
+                        @if (session('status'))
+                            <div class="alert alert-success">
+                                <a href="#" data-dismiss="alert" class="close">&times;</a>
+                                <p>{{ session('status') }}</p>
                             </div>
+                        @endif
+                        <form action="{{ route('tags.store') }}" method="POST">
+                            @csrf
                             <div class="form-group">
-                                <label for="">Email</label>
-                                <input type="text" class="form-control">
+                                <label for="">Tag Name</label>
+                                <input type="text" name="tag_name" class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="">Phone</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Role</label>
-                                <select name="" id="" class="form-control">
-                                    <option value="" selected>Select</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Confirm Password</label>
-                                <input type="password" class="form-control">
-                            </div>
+                           <div class="form-group text-right">
+                               <button type="submit" class="btn btn-success">Submit</button>
+                           </div>
                         </form>
                     </div>
                 </div>

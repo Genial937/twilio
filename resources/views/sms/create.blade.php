@@ -48,6 +48,9 @@
                                 <label for="">Tag</label>
                                 <select name="" id="" class="form-control">
                                     <option value="" selected>Select</option>
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag->id }}">{{ $tag->tag_name }}, {{ $tag->contacts->count() }} contacts</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">

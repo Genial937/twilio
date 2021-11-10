@@ -46,21 +46,45 @@
                         <table class="table table-sm">
                             <thead>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Apps</th>
+                                <th>Tag Name</th>
+                                <th>No. of Contacts</th>
                                 <th>Action</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                @php($count = 1)
+                               @foreach ($tags as $tag)
+                               <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $tag->tag_name }}</td>
+                                <td>{{ $tag->contacts->count() }}</td>
+                                <td>
+                                    <a href="#" data-toggle="modal" data-target="#edit{{ $tag->id }}" class="btn btn-success btn-sm"><i class="fa fa-pencil"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+                                </td>
+
+                                <div class="modal fade" id="edit{{ $tag->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="">
+                                                <div class="modal-header">
+                                                    <h5>Edit Tag</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="">Tag Name</label>
+                                                        <input type="text" class="form-control" value="{{ $tag->tag_name }}">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="#" data-dismiss="modal" class="btn btn-danger">Close</a>
+                                                    <button class="btn btn-success">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                               @endforeach
                             </tbody>
                         </table>
                     </div>

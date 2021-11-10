@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Client_user;
+use App\Models\Tag;
 
 class ImportController extends Controller
 {
@@ -13,7 +16,11 @@ class ImportController extends Controller
      */
     public function index()
     {
-        return view('contacts.import');
+        $user_id = Auth::id();
+        $client = Client_user::where('user_id', $user_id)->first();
+        $client_id = $client->client_id;
+        $tags = Tag::where('client_id', $client_id)->get();
+        return view('contacts.import', compact('tags'));
     }
 
     /**

@@ -40,35 +40,39 @@
                 <div class="card shadow">
                     <div class="card-header">
                         <h2 class="card-title">Add Contact</h2>
-                        <a href="{{ route('contacts.index') }}" class="btn btn-success pull-right">Back</a>
+                        <a href="{{ route('contacts.store') }}" class="btn btn-success pull-right">Back</a>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        @if (session('status'))
+                        <div class="alert alert-success">
+                            <a href="#" data-dismiss="alert" class="close">&times;</a>
+                            <p>{{ session('status') }}</p>
+                        </div>
+                        @endif
+                        <form action="{{ route('contacts.store') }}" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label for="">Name</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Email</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Phone</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="phone" class="form-control" placeholder="i.e 0743160199" value="{{ old('phone') }}" max="10" required>
+                                @error('phone')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <label for="">Role</label>
-                                <select name="" id="" class="form-control">
-                                    <option value="" selected>Select</option>
+                                <label for="">Tag</label>
+                                <select name="tag_id" id="" class="form-control" required>
+                                    <option value="" selected disabled>Select</option>
+                                    @foreach ($tags as $item)
+                                        <option value="{{ $item->id }}">{{ $item->tag_name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="">Password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Confirm Password</label>
-                                <input type="password" class="form-control">
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </form>
                     </div>

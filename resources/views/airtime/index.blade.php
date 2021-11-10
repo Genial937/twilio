@@ -48,8 +48,7 @@
                                 <th>#</th>
                                 <th>Sender</th>
                                 <th>Mobile</th>
-                                <th>Message (1 to 80 characters)</th>
-                                <th>Length</th>
+                                
                                 <th>Unit</th>
                                 <th>Delivery</th>
                                 <th>Action</th>
@@ -62,8 +61,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    
                                 </tr>
                             </tbody>
                         </table>

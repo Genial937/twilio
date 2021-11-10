@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Client_user;
+use App\Models\Tag;
+use App\Models\Contact;
 
 class ContactController extends Controller
 {
@@ -13,7 +17,8 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contacts.index');
+        $contacts = Contact::with('tags')->latest()->get();
+        return view('contacts.index', compact('contacts'));
     }
 
     /**
@@ -23,7 +28,11 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('contacts.create');
+        $user_id = Auth::id();
+        $client = Client_user::where('user_id', $user_id)->first();
+        $client_id = $client->client_id;
+        $tags = Tag::where('client_id', $client_id)->get();
+        return view('contacts.create', compact('tags'));
     }
 
     /**
@@ -34,7 +43,20 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'phone' => ['max:10','min:10']
+        ]);
+        $tag = Tag::findOrFail($request->tag_id);
+        $client_id = $tag->client_id;
+        $contact = substr($request->phone, 1);
+        $phone = '254'.$contact;
+        Contact::create(array_merge($request->all(),
+        [
+            'client_id' => $client_id,
+            'phone' => $phone,
+        ]
+    ));
+        return back()->withStatus('Contact added successfully!');
     }
 
     /**

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Client_user;
+use App\Models\Tag;
 
 class SMSController extends Controller
 {
@@ -23,7 +26,11 @@ class SMSController extends Controller
      */
     public function create()
     {
-        return view('sms.create');
+        $user_id = Auth::id();
+        $client = Client_user::where('user_id', $user_id)->first();
+        $client_id = $client->client_id;
+        $tags = Tag::where('client_id', $client_id)->with(['contacts'])->get();
+        return view('sms.create', compact('tags'));
     }
 
     /**
