@@ -33,6 +33,21 @@
         </div>
     </div> <!-- / .header -->
 
+    {{-- Spinners --}}
+    <div class="spin-container" id="spin">
+        <div class="la-ball-spin la-2x my-spin">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    {{-- /Spinners --}}
+
     <!-- CARDS -->
     <div class="container-fluid">
         <div class="row">
@@ -43,10 +58,16 @@
                         <a href="{{ route('admin.index') }}" class="btn btn-success pull-right">Back</a>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="warn">
+                            <strong>Warning!</strong> Your account balance is less than the amount required to send this sms. Kindly top up <a href="" class="text-white">Here</a>.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        <form id="send-sms">
                             <div class="form-group">
                                 <label for="">Tag</label>
-                                <select name="" id="" onchange="getContacts(this.value)" class="form-control">
+                                <select name="tag_id" id="tag_id" onchange="getContacts(this.value)" class="form-control">
                                     <option value="" selected>Select</option>
                                     @foreach ($tags as $tag)
                                         <option value="{{ $tag->id }}">{{ $tag->tag_name }}, {{ $tag->contacts->count() }} contacts</option>
@@ -61,6 +82,7 @@
                                     <a href="javascript:void(0)" class="btn btn-primary btn-sm"><span id="count">0</span> characters</a>
                                     <a href="javascript:void(0)" class="btn btn-success btn-sm"><b>Total: Kes. <span id="price"></span></b></a>
                                 </div>
+                                <input type="hidden" id="balance" class="balance" value="{{ App\Http\Controllers\Helpers\HelpersController::get_client_balance() }}">
                             </div>
                             <div class="forn-group text-right">
                                 <button class="btn btn-primary pull-right">Send</button>
@@ -73,6 +95,12 @@
     </div>
     <style>
         #show{
+            display: none;
+        }
+        #warn{
+            display:none;
+        }
+        #spin{
             display: none;
         }
     </style>

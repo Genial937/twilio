@@ -3,6 +3,6 @@
   Top Up
 </a>
 <a href="#!" class="btn btn-primary lift">
-  Balance: Kes: 909
+  Balance: Kes. {{ App\Http\Controllers\Helpers\HelpersController::get_client_balance() }}
 </a>
 @endrole
