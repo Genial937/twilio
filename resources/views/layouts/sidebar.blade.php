@@ -7,7 +7,7 @@
       </button>
 
       <!-- Brand -->
-      <a class="navbar-brand" href="./index.html">
+      <a class="navbar-brand" href="">
         <img src="img/logo.svg" class="navbar-brand-img 
         mx-auto" alt="...">
       </a>

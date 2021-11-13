@@ -44,4 +44,5 @@ Route::resource('roles', RolesController::class);
 Route::resource('permissions', PermissionsController::class);
 Route::resource('logout', LogoutController::class);
 Route::resource('profile', ProfileController::class);
+Route::get('/sms/get/contacts/{id}', [ContactController::class, 'get_contacts']);
 });

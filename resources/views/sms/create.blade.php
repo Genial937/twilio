@@ -46,7 +46,7 @@
                         <form action="">
                             <div class="form-group">
                                 <label for="">Tag</label>
-                                <select name="" id="" class="form-control">
+                                <select name="" id="" onchange="getContacts(this.value)" class="form-control">
                                     <option value="" selected>Select</option>
                                     @foreach ($tags as $tag)
                                         <option value="{{ $tag->id }}">{{ $tag->tag_name }}, {{ $tag->contacts->count() }} contacts</option>
@@ -55,8 +55,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Message</label>
+                                <input type="hidden" id="num" value="1">
                                 <textarea name="" id="message" cols="30" rows="6" class="form-control message"></textarea>
-                                <p class="mt-1" id="show"><span id="count">0</span> characters <b>Kes. <span id="price"></span></b></p>
+                                <div id="show" class="btn-group btn-group-justified mt-2">
+                                    <a href="javascript:void(0)" class="btn btn-primary btn-sm"><span id="count">0</span> characters</a>
+                                    <a href="javascript:void(0)" class="btn btn-success btn-sm"><b>Total: Kes. <span id="price"></span></b></a>
+                                </div>
                             </div>
                             <div class="forn-group text-right">
                                 <button class="btn btn-primary pull-right">Send</button>

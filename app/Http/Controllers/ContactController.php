@@ -103,4 +103,9 @@ class ContactController extends Controller
     {
         //
     }
+
+    public function get_contacts($id){
+      $contacts = Contact::where('tag_id', $id)->get()->count();
+      return $contacts;
+    }
 }

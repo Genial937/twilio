@@ -40,10 +40,23 @@
                 <div class="card shadow">
                     <div class="card-header">
                         <h2 class="card-title">Import Contacts From Excel</h2>
+                       
                         <a href="{{ route('contacts.index') }}" class="btn btn-success pull-right">Back</a>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <p class="text-danger">Excel file should have two columns with titles: name, phone</p>
+                        @if (session('status'))
+                            @include('layouts.success')
+                        @endif
+                        @if (isset($errors) && $errors->any())
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li class="text-danger">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        <form action="{{ route('import.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="form-group">
                                 <label for="">Tag</label>
                                 <select name="tag_id" id="" class="form-control" required>
@@ -55,7 +68,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">File (In the format: name, phone)</label>
-                                <input type="file" class="form-control" required>
+                                <input type="file" name="file" class="form-control" required>
                             </div>
                             <div class="form-group text-right">
                                 <button type="submit" class="btn btn-success">Submit</button>

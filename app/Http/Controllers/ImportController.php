@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Client_user;
 use App\Models\Tag;
+use App\Imports\ContactsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
 {
@@ -41,7 +43,15 @@ class ImportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tag_id = $request->tag_id;
+        $tag = Tag::findOrFail($request->tag_id);
+        $client_id = $tag->client_id;
+        $file = $request->file('file')->store('imports');
+        $import = new ContactsImport($tag_id, $client_id);
+        $import->import($file);
+        // $import = Excel::import(new ContactsImport($tag_id, $client_id), $file);
+        //dd($import->errors());
+        return back()->withStatus('Excel file imported successfully!');
     }
 
     /**

@@ -15,6 +15,7 @@
 
 <!-- Map -->
 <script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
 
 <!-- Theme JS -->
 <script src="{{ asset('js/theme.min.js') }}"></script>
@@ -22,5 +23,6 @@
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+
 </body>
 </html>
