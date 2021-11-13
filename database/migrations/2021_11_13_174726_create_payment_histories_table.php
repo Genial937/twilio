@@ -18,7 +18,7 @@ class CreatePaymentHistoriesTable extends Migration
             $table->unsignedBigInteger('client_id');
             $table->double('amount')->nullable();
             $table->string('transaction_id')->nullable();
-            $able->string('transaction_date')->nullable();
+            $table->string('transaction_date')->nullable();
             $table->string('phone')->nullable();
             $table->foreign('client_id')->references('id')->on('clients');
             $table->timestamps();
