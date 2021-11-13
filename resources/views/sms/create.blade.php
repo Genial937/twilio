@@ -59,11 +59,26 @@
                     </div>
                     <div class="card-body">
                         <div class="alert alert-danger alert-dismissible fade show" role="alert" id="warn">
-                            <strong>Warning!</strong> Your account balance is less than the amount required to send this sms. Kindly top up <a href="" class="text-white">Here</a>.
+                            <strong>Warning!</strong> Insufficient balance!. Kindly top up <a href="" class="text-white">Here</a>.
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
                           </div>
+
+                          <div class="alert alert-success alert-dismissible fade show" role="alert" id="success">
+                            <strong>SMS sent successfully!</strong>.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+
+                          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="fail">
+                            <strong>Failed to send message!</strong>.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          
                         <form id="send-sms">
                             <div class="form-group">
                                 <label for="">Tag</label>
@@ -101,6 +116,9 @@
             display:none;
         }
         #spin{
+            display: none;
+        }
+        #success, #fail{
             display: none;
         }
     </style>

@@ -7,9 +7,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Client_user;
 use App\Models\Payment;
+use App\Models\Message;
+use App\Models\Client;
 
 class HelpersController extends Controller
-{
+{    
+    /**
+     * Method get_client
+     *
+     * @return void
+     */
+    static public function get_client(){
+        $user_id = Auth::id();
+        $client_data = Client_user::where('user_id', $user_id)->first();
+        $client = Client::where('id', $client_data->client_id)->first();
+        return $client;
+    }
         
     /**
      * Method get_client_balance
@@ -17,9 +30,8 @@ class HelpersController extends Controller
      * @return void
      */
     static public function get_client_balance(){
-        $user_id = Auth::id();
-        $client = Client_user::where('user_id', $user_id)->first();
-        $client_id = $client->client_id;
+        $client = HelpersController::get_client();
+        $client_id = $client->id;
         $payment = Payment::where('client_id', $client_id)->first();
         $balance = $payment->account_balance;
         return $balance;
@@ -34,6 +46,96 @@ class HelpersController extends Controller
      * @return void
      */
     static public function send_mobi_sms($mobile, $message){
+        set_time_limit(0);
+        $client = HelpersController::get_client();
+        $sender_id = $client->sender_id;
+        $username = 'peakanddale'; // use 'sandbox' for development in the test environment
+        $apiKey   = $client->api_key; // use your sandbox app API key for development in the test environment
+       // $result = [];
+        $url="https://bulk.api.mobitechtechnologies.com/api/sendsms";
+        $ch = curl_init($url);
+        $data = array(
+            'api_key' => $apiKey,
+            'username' => $username,
+            'sender_id' => $sender_id,
+            'message' => $message,
+            'phone' => $mobile,
+        );
 
+        $payload = json_encode($data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Accept:application/json'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        $result = json_decode(curl_exec($ch));
+        curl_close($ch);
+        return $result;
+    }
+    
+    /**
+     * Method save_sms_response
+     *
+     * @param $result $result [explicite description]
+     * @param $message $message [explicite description]
+     *
+     * @return void
+     */
+    static public function save_sms_response($client_id, $result, $message){
+        set_time_limit(0);
+        foreach ($result as $item) {
+            switch ($item->status) {
+                case '102':
+                $status = $item->status;
+                $message = $item->message;
+
+                $mes = new Message();
+                $mes->client_id = $client_id;
+                $mes->status = $status;
+                $mes->message = $message;
+                $mes->save();
+                break;
+
+                case '401':
+                    $status = $item->status;
+                    $message = $item->message;
+    
+                    $mes = new Message();
+                    $mes->client_id = $client_id;
+                    $mes->status = $status;
+                    $mes->message = $message;
+                    $mes->save();
+                    break;
+
+                case '104':
+                $status = $item->status;
+                $message_response = $item->message;
+                $response = 'failed';
+    
+                $mes = new Message();
+                $mes->client_id = $client_id;
+                $mes->status = $status;
+                $mes->message_response = $message_response;
+                $mes->response = $response;
+                $mes->save();
+                    break;
+                
+                case '200':
+                $status = $item->status;
+                $recipient = $item->recipient;
+                $message_id = $item->message_id;
+                $response = $item->response;
+    
+                $mes = new Message();
+                $mes->client_id = $client_id;
+                $mes->status = $status;
+                $mes->message = $message;
+                $mes->message_id = $message_id;
+                $mes->response = $response;
+                $mes->recipient = $recipient;
+                $mes->save();
+                    break;
+            }
+            
+        }
+        return true;
     }
 }

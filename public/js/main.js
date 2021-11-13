@@ -2,6 +2,8 @@ $(".table").DataTable();
 $("#client").hide();
 $("#warn").hide();
 $("#spin").hide();
+$("#fail").hide();
+$("#success").hide();
 //word count
 $("#message").keyup(function(){
     var words = $("#message").val();
@@ -50,6 +52,7 @@ $.ajaxSetup({
 // Send Sms
 $("#send-sms").submit(function(e){
     e.preventDefault();
+    $("#spin").show();
     var tag_id = $("#tag_id").val();
     var message = $("#message").val();
     var price = document.getElementById("price").innerHTML;
@@ -60,19 +63,30 @@ $("#send-sms").submit(function(e){
         $("#warn").show();
     } else {
         $("#spin").show();
-        data = [
-            tag_id,
-            message,
-            price,
-            balance
-        ]
+        data = {
+            tag_id: tag_id,
+            message: message,
+            price: price,
+            balance: balance
+        };
         axios.post('/send/sms', data)
         .then((response) => {
-            $("#spin").show();
-            console.log(response);
+            $("#spin").hide();
+            var tag_id = $("#tag_id").val("");
+            var message = $("#message").val("");
+            $("#show").css("display","none");
+            if (response.data === 400) {
+                $("#warn").show();
+            } else {
+                $("#success").show();
+            }
         })
         .catch((error)=>{
-            console.log(error);
+            var tag_id = $("#tag_id").val("");
+            var message = $("#message").val("");
+            $("#show").css("display","none");
+            $("#fail").show();
+            $("#spin").hide();
         })
     }
 

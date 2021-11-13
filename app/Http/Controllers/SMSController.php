@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Client_user;
 use App\Models\Tag;
+use App\Models\Contact;
+use App\Http\Controllers\Helpers\HelpersController;
 
 class SMSController extends Controller
 {
@@ -41,7 +43,31 @@ class SMSController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        set_time_limit(0);
+        $client = HelpersController::get_client();
+        $tag_id = $request->tag_id;
+        $price = $request->price;
+        $message = $request->message;
+        $balance = $request->balance;
+        //$result = [];
+
+        if ($price > $balance) {
+            return 400;
+        } else {
+            $contacts = Contact::where('tag_id', $tag_id)->get();
+            $chunk = $contacts->chunk(50);
+            foreach ($chunk as $key => $contact) {
+                //dd($receivers);
+               foreach ($contact as $key => $receiver) {
+                $result = HelpersController::send_mobi_sms($receiver->phone, $message);
+               $res = HelpersController::save_sms_response($client->id, $result, $message);
+               }
+            }
+            //return $result;
+            //save response in local db
+            return 200;
+        }
+        
     }
 
     /**

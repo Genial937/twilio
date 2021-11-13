@@ -31,7 +31,7 @@ class ContactsImport implements ToModel, WithHeadingRow, SkipsOnError, WithValid
     {
         return new Contact([
             'name' => $row['name'],
-            'phone' => $row['phone'],
+            'phone' => '254'.$row['phone'],
             'tag_id' => $this->tag_id,
             'client_id' => $this->client_id
         ]);
