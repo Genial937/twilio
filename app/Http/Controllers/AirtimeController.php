@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tag;
+use App\Models\Contact;
+use App\Http\Controllers\Helpers\HelpersController;
 
 class AirtimeController extends Controller
 {
@@ -34,7 +37,24 @@ class AirtimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'tag_id' => ['required'],
+            'amount' => ['required']
+        ]);
+        $tag_id = $request->tag_id;
+        $contacts = Contact::where('tag_id', $tag_id)->get();
+        $mobiles = [];
+        foreach ($contacts as $contact) {
+            $mobiles[] =  $contact->phone;
+        }
+        $mobile = implode(',', $mobiles);
+        $recipients = [[
+            "phoneNumber"  => $mobile,
+            "currencyCode" => "KES",
+            "amount"       => $request->amount
+        ]];
+        $result = HelpersController::send_at_airtime($recipients);
+        return 200;
     }
 
     /**

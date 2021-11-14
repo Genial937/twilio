@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Client_user;
 use App\Models\Tag;
+use App\Http\Controllers\Helpers\HelpersController;
 
 class TagsController extends Controller
 {
@@ -16,10 +17,8 @@ class TagsController extends Controller
      */
     public function index()
     {
-        $user_id = Auth::id();
-        $client = Client_user::where('user_id', $user_id)->first();
-        $client_id = $client->client_id;
-        $tags = Tag::where('client_id', $client_id)->with(['contacts'])->get();
+        $client = HelpersController::get_client();
+        $tags = Tag::where('client_id', $client->id)->with(['contacts'])->get();
         return view('contacts.tags.index', compact('tags'));
     }
 

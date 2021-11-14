@@ -98,6 +98,7 @@
                                     <a href="javascript:void(0)" class="btn btn-success btn-sm"><b>Total: Kes. <span id="price"></span></b></a>
                                 </div>
                                 <input type="hidden" id="balance" class="balance" value="{{ App\Http\Controllers\Helpers\HelpersController::get_client_balance() }}">
+                                <input type="hidden" id="vendor" value="{{ App\Http\Controllers\Helpers\HelpersController::get_client()->vendor }}">
                             </div>
                             <div class="forn-group text-right">
                                 <button class="btn btn-primary pull-right">Send</button>

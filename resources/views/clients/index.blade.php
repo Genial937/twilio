@@ -21,7 +21,7 @@
                         </h1>
 
                     </div>
-                    <div class="col-auto">
+                    <div class="col-auto pr-6">
 
                         <!-- Button -->
                         @include('layouts.header')

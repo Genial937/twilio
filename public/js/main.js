@@ -9,6 +9,8 @@ $("#message").keyup(function(){
     var words = $("#message").val();
     var num_contacts = $("#num").val();
     var length = words.length;
+    var vendor = $("#vendor").val();
+    //console.log(vendor);
     var unit = Math.ceil(length/160);
     var price = unit*1*num_contacts;
     var balance = $("#balance").val();
@@ -58,8 +60,7 @@ $("#send-sms").submit(function(e){
     var price = document.getElementById("price").innerHTML;
     var balance = document.getElementById("balance").value;
     
-    if (price < balance) {
-        alert(balance)
+    if (price > balance) {
         $("#warn").show();
     } else {
         $("#spin").show();
@@ -71,6 +72,7 @@ $("#send-sms").submit(function(e){
         };
         axios.post('/send/sms', data)
         .then((response) => {
+            console.log(response);
             $("#spin").hide();
             var tag_id = $("#tag_id").val("");
             var message = $("#message").val("");
@@ -87,6 +89,7 @@ $("#send-sms").submit(function(e){
             $("#show").css("display","none");
             $("#fail").show();
             $("#spin").hide();
+            console.log(error);
         })
     }
 

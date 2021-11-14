@@ -46,4 +46,5 @@ Route::resource('logout', LogoutController::class);
 Route::resource('profile', ProfileController::class);
 Route::get('/sms/get/contacts/{id}', [ContactController::class, 'get_contacts']);
 Route::post('/send/sms', [SMSController::class, 'store']);
+Route::get('test/{phone}/{message}', [SMSController::class, 'test']);
 });
