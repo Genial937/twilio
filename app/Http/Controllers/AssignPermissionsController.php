@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Tag;
-use App\Models\Contact;
-use App\Http\Controllers\Helpers\HelpersController;
 
-class AirtimeController extends Controller
+class AssignPermissionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +14,7 @@ class AirtimeController extends Controller
      */
     public function index()
     {
-        return view('airtime.index');
+        //
     }
 
     /**
@@ -26,9 +24,7 @@ class AirtimeController extends Controller
      */
     public function create()
     {
-        $client = HelpersController::get_client();
-        $tags = Tag::where('client_id', $client->id)->with(['contacts'])->get();
-        return view('airtime.create', compact('tags'));
+        //
     }
 
     /**
@@ -39,24 +35,7 @@ class AirtimeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'tag_id' => ['required'],
-            'amount' => ['required']
-        ]);
-        $tag_id = $request->tag_id;
-        $contacts = Contact::where('tag_id', $tag_id)->get();
-        $mobiles = [];
-        foreach ($contacts as $contact) {
-            $mobiles[] =  $contact->phone;
-        }
-        $mobile = implode(',', $mobiles);
-        $recipients = [[
-            "phoneNumber"  => $mobile,
-            "currencyCode" => "KES",
-            "amount"       => $request->amount
-        ]];
-        $result = HelpersController::send_at_airtime($recipients);
-        return $result;
+        //
     }
 
     /**
@@ -90,7 +69,12 @@ class AirtimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        foreach ($request->permission as $key => $perm) {
+            $user->givePermissionTo($perm);
+        }
+        return back()->withStatus('Permissions assigned to the user');
     }
 
     /**
@@ -103,15 +87,4 @@ class AirtimeController extends Controller
     {
         //
     }
-
-    public function test_airtime(){
-        $recipients = [[
-            "phoneNumber"  => '254743160199',
-            "currencyCode" => "KES",
-            "amount"       => 5
-        ]];
-        $result = HelpersController::send_at_airtime($recipients);
-        return $result;
-    }
-    
 }

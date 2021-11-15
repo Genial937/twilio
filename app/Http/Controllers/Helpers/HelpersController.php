@@ -11,6 +11,7 @@ use App\Models\Message;
 use App\Models\Client;
 use AfricasTalking\SDK\AfricasTalking;
 use Exception;
+use stdClass;
 
 class HelpersController extends Controller
 {
@@ -206,9 +207,12 @@ class HelpersController extends Controller
             $results = $airtime->send([
                 "recipients" => $recipients
             ]);
-           return $results;
+            
+            $obj = (object)$results['data'];
+           return $obj->errorMessage;
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            $error = $e->getMessage();
+            return $error;
         }
     }
 }

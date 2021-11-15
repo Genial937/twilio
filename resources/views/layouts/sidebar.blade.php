@@ -67,13 +67,13 @@
           @role('Admin')
           <li class="nav-item">
             <a class="nav-link" href="#sidebarPages1" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
-              <i class="fe fe-users"></i> Clients
+              <i class="fe fe-users"></i> Teams
             </a>
             <div class="collapse " id="sidebarPages1">
               <ul class="nav nav-sm flex-column">
                 <li class="nav-item">
                   <a href="{{ route('clients.index') }}" class="nav-link">
-                    Clients
+                    Teams
                   </a>
                  
                 </li>
@@ -150,6 +150,7 @@
             </ul>
           </div>
         </li>
+        @can('has airtime subscription')
         <li class="nav-item">
           <a class="nav-link" href="#sidebarPages4" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
             <i class="fe fe-pocket"></i> Airtime
@@ -170,6 +171,28 @@
             </ul>
           </div>
         </li>
+        @endcan
+        <li class="nav-item">
+          <a class="nav-link" href="#sidebarPages11" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
+            <i class="fe fe-message-square"></i> Top Up
+          </a>
+          <div class="collapse " id="sidebarPages11">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="{{ route('top-up.index') }}" class="nav-link">
+                  Top Up History
+                </a>  
+              </li>
+              <li class="nav-item">
+                  <a href="{{ route('top-up.create') }}" class="nav-link">
+                    Top Up
+                  </a>  
+                </li>
+          
+            </ul>
+          </div>
+        </li>
+       
          @endrole
           <li class="nav-item">
             <a class="nav-link" href="#sidebarBasics1" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarBasics">
@@ -226,8 +249,19 @@
               </ul>
             </div>
           </li>
+
+          <!-- Divider -->
+        <hr class="navbar-divider my-3">
           
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('logout.index') }}">
+            <i class="fe fe-log-out"></i> Logout
+          </a>
+        </li>
         </ul>
+        
+
+        
 
         <!-- Push content down -->
         <div class="mt-auto"></div>

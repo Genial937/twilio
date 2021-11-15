@@ -17,7 +17,7 @@
 
                         <!-- Title -->
                         <h1 class="header-title">
-                            Clients
+                            Teams
                         </h1>
 
                     </div>
@@ -39,7 +39,7 @@
             <div class="col-md-9 m-auto">
                 <div class="card shadow">
                     <div class="card-header">
-                        <h2 class="card-title">Add Client</h2>
+                        <h2 class="card-title">Add Team</h2>
                         <a href="{{ route('clients.index') }}" class="btn btn-success pull-right">Back</a>
                     </div>
                     <div class="card-body">

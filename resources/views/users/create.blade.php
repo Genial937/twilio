@@ -73,7 +73,7 @@
                                 </select>
                             </div>
                             <div class="form-group" id="client">
-                                <label for="">Client</label>
+                                <label for="">Team</label>
                                 <select name="client_id" id="" class="form-control">
                                     <option value="" selected>Select</option>
                                     @foreach ($clients as $item)

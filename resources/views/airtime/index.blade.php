@@ -46,11 +46,10 @@
                         <table class="table table-sm">
                             <thead>
                                 <th>#</th>
-                                <th>Sender</th>
-                                <th>Mobile</th>
-                                
-                                <th>Unit</th>
-                                <th>Delivery</th>
+                                <th>Receiver</th>
+                                <th>Amount</th>
+                                <th>Sent On</th>
+                                <th>Delivery Status</th>
                                 <th>Action</th>
                             </thead>
                             <tbody>

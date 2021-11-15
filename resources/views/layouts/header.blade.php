@@ -1,5 +1,5 @@
 @role('Client')
-<a href="#" class="btn btn-default shadow btn-outline-success">
+<a href="{{ route('top-up.index') }}" class="btn btn-default shadow btn-outline-success">
   Top Up
 </a>
 <a href="#!" class="btn btn-primary lift">

@@ -11,11 +11,14 @@ use App\Http\Controllers\TagsController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\AirtimeController;
+use App\Http\Controllers\AssignPermissionsController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RechargeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,4 +50,8 @@ Route::resource('profile', ProfileController::class);
 Route::get('/sms/get/contacts/{id}', [ContactController::class, 'get_contacts']);
 Route::post('/send/sms', [SMSController::class, 'store']);
 Route::get('test/{phone}/{message}', [SMSController::class, 'test']);
+Route::post('/send/airtime', [AirtimeController::class, 'store']);
+Route::get('test/airtime', [AirtimeController::class, 'test_airtime']);
+Route::resource('top-up', RechargeController::class);
+Route::resource('assign-permissions', AssignPermissionsController::class);
 });

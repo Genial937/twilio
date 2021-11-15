@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Client_user;
 use App\Models\Client;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -19,6 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $permissions = Permission::all();
         $user = Auth::user();
         $client_name = "";
         if ($user->role === "Client") {
@@ -26,13 +28,13 @@ class UserController extends Controller
         $client_name = Client::where('id', $client->id)->first();
         }
         if ($user->hasRole('Admin')) {
-            $users = User::where('role', 'Client')->latest()->get();
+            $users = User::where('role', 'Client')->with(['roles', 'permissions'])->latest()->get();
         } elseif($user->hasRole('Client')) {
             $users = Client_user::where('client_id', $client->id)->with(['users'])->latest()->get();
         }
         
-      // dd($users);
-        return view('users.index', compact('users','client_name'));
+      //dd($users);
+        return view('users.index', compact('users','client_name','permissions'));
     }
 
     /**

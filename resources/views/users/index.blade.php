@@ -45,6 +45,9 @@
                        @endrole
                     </div>
                     <div class="card-body">
+                        @if (session('status'))
+                            @include('layouts.success')
+                        @endif
                         <table class="table table-sm">
                             <thead>
                                 <th>Name</th>
@@ -52,6 +55,7 @@
                                 <th>Phone</th>
                                 @role('Admin')
                                 <th>Team</th>
+                                <th>Assign Permissions</th>
                                 @endrole
                                 <th>Action</th>
                             </thead>
@@ -67,9 +71,49 @@
                                 <td>{{ $user->phone }}</td>
                                 <td>{{ $team->client->name }}</td>
                                 <td>
+                                    <a href="#" data-toggle="modal" data-target="#perm{{ $user->id }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </td>
+                                <td>
                                     <a href="" class="btn btn-success btn-sm"><i class="fa fa-pencil"></i></a>
                                     <a href="" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
                                 </td>
+
+                                <div class="modal fade" id="perm{{ $user->id }}">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <form action="{{ route('assign-permissions.update', $user->id) }}" method="POST">
+                                                @csrf
+                                                @method('put')
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title">Assign Permissions</h3>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            @foreach ($permissions as $permission)
+                                                    <div class="form-group">
+                                                        <input type="checkbox" value="{{ $permission->name }}" name="permission[]"> {{ $permission->name }}
+                                                    </div>
+                                                    @endforeach
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h4><b>Current {{ $user->name }} Permissions</b></h4>
+                                                            <ul>
+                                                                @foreach ($user->permissions as $item)
+                                                                    <li>{{ $item->name }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="#" data-dismiss="modal" class="btn btn-danger">Cancel</a>
+                                                    <button class="btn btn-success" type="submit">Assign</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </tr>
                                @endrole
                                @role('Client')

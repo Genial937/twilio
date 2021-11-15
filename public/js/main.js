@@ -4,6 +4,7 @@ $("#warn").hide();
 $("#spin").hide();
 $("#fail").hide();
 $("#success").hide();
+$("#alert").hide();
 //word count
 $("#message").keyup(function(){
     var words = $("#message").val();
@@ -93,4 +94,27 @@ $("#send-sms").submit(function(e){
         })
     }
 
+})
+
+// Send airtime
+$("#send-airtime").submit(function(e){
+    e.preventDefault();
+    $("#spin").show();
+    var tag_id = $("#tag_id").val();
+    var amount = $("#amount").val();
+    var data = {
+        tag_id: tag_id,
+        amount: amount
+    }
+    axios.post('/send/airtime', data)
+    .then((response)=>{
+        $("#spin").hide();
+        $("#alert").show();
+        document.getElementById("response_text").innerHTML = response.data;
+       console.log(response.data)
+    })
+    .catch((error) => {
+        $("#spin").hide();
+        console.log(error)
+    })
 })
