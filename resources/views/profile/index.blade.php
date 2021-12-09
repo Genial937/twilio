@@ -44,10 +44,11 @@
 
                                     <!-- Avatar -->
                                     <div class="avatar">
-                                        <img class="avatar-img rounded-circle" src="img/avatars/profiles/avatar-1.jpg"
+                                        <img class="avatar-img rounded-circle" src="public/img/avatars/profiles/avatar-1.jpg"
                                             alt="...">
                                     </div>
 
+                                    
                                 </div>
 
                             </div> <!-- / .row -->

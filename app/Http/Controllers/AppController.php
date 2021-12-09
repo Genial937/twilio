@@ -62,7 +62,8 @@ class AppController extends Controller
      */
     public function show($id)
     {
-        //
+        $app = Client_app::where('id', $id)->first();
+        return view('dashboard1', compact('app'));
     }
 
     /**

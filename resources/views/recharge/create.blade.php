@@ -43,17 +43,21 @@
                         <a href="{{ route('top-up.index') }}" class="btn btn-success pull-right"><i class="fa fa-chevron-left"></i> Back</a>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        @if (session('status'))
+                            
+                        @endif
+                        <form action="{{ route('top-up.store') }}" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label for="">Amount</label>
-                                <input type="number" step="any" class="form-control" required>
+                                <input type="number" name="amount" step="any" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Top Phone Number</label>
-                                <input type="number" step="any" class="form-control" placeholder="i.e 0743161189" required>
+                                <input type="number" step="any" name="phone" class="form-control" placeholder="i.e 0743161189" required>
                             </div>
                             <div class="form-group text-right">
-                                <button class="btn btn-success">Submit</button>
+                                <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </form>
                     </div>

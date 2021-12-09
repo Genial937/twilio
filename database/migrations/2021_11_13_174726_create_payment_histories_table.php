@@ -16,6 +16,7 @@ class CreatePaymentHistoriesTable extends Migration
         Schema::create('payment_histories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
+            $table->json('response')->nullable();
             $table->double('amount')->nullable();
             $table->string('transaction_id')->nullable();
             $table->string('transaction_date')->nullable();

@@ -46,7 +46,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'phone' => ['max:10', 'min:10']
+            'phone' => ['required']
         ]);
         $tag = Tag::findOrFail($request->tag_id);
         $client_id = $tag->client_id;

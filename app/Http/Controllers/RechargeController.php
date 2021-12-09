@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Helpers\HelpersController;
 use Illuminate\Http\Request;
 
 class RechargeController extends Controller
@@ -34,7 +35,15 @@ class RechargeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'phone' => ['required'],
+        ]);
+        $phone = '254'.substr($request->phone,1);
+        $client = HelpersController::get_client();
+        $client_id = $client->id;
+        $pass = HelpersController::stkpush($request->amount, $phone, $client_id);
+        //return $pass;
+        return back()->withStatus('Please complete payment on STK push on your phone');
     }
 
     /**

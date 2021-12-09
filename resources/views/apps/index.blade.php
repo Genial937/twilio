@@ -59,7 +59,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-4">
                                             <!-- Avatar -->
-                                            <a href="{{ route('show', $app->id) }}" class="pt-2">
+                                            <a href="{{ route('apps.show', $app->id) }}" class="pt-2">
                                                 <h3>{{ $app->app_name }}</h3>
                                             </a>
 

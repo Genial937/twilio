@@ -2,9 +2,19 @@
 <a href="{{ route('top-up.index') }}" class="btn btn-default shadow btn-outline-success">
   Top Up
 </a>
+@php
+    $client = App\Http\Controllers\Helpers\HelpersController::get_client();
+@endphp
+@if ($client->vendor === 'AT')
+<a href="#!" class="btn btn-primary lift">
+  Balance: Kes. {{ App\Http\Controllers\Helpers\HelpersController::fetch_at_balance() }} | Recharge: Paybill: 525900 Account No: peakanddale.api
+</a>
+@else    
 <a href="#!" class="btn btn-primary lift">
   Balance: Kes. {{ App\Http\Controllers\Helpers\HelpersController::get_client_balance() }}
 </a>
+@endif
+
 @endrole
 @role('Admin')
 <div class="btn-group" style="width: 200px">

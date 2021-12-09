@@ -87,6 +87,9 @@
             #alert{
                 display: none;
             }
+            #spin{
+                display: none;
+            }
         </style>
     </div>
 @endsection

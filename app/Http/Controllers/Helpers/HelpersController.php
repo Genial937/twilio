@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\Message;
 use App\Models\Client;
 use AfricasTalking\SDK\AfricasTalking;
+use Carbon\Carbon;
 use Exception;
 use stdClass;
 
@@ -194,7 +195,7 @@ class HelpersController extends Controller
         $username = $client->username; // use 'sandbox' for development in the test environment
         $apiKey   = $client->api_key;
         // Set your app credentials
-        
+
 
         // Initialize the SDK
         $AT       = new AfricasTalking($username, $apiKey);
@@ -207,12 +208,143 @@ class HelpersController extends Controller
             $results = $airtime->send([
                 "recipients" => $recipients
             ]);
-            
+
             $obj = (object)$results['data'];
-           return $obj->errorMessage;
+            if ($obj->errorMessage == 'None') {
+                return  "Airtime sent successfully";
+            } else {
+                return 'Failed to send Airtime, ' . $obj->errorMessage;
+            }
+
+            return $results['status'];
+            //return $obj->errorMessage;
         } catch (Exception $e) {
             $error = $e->getMessage();
             return $error;
+        }
+    }
+
+    /**
+     * Method lipaNaMpesaPassword
+     *
+     * @return void
+     */
+    static public function lipaNaMpesaPassword()
+    {
+        // timestamp
+        $timestamp = Carbon::rawParse('now')->format('YmdHms');
+        //passkey
+        $passkey = env('MPESA_PASS_KEY');
+        //businessShortCode
+        $businessShortCode = env('MPESA_C2B_SHORTCODE');
+        //generate Password
+        $mpesaPassword = base64_encode($businessShortCode . $passkey . $timestamp);
+
+        return $mpesaPassword;
+    }
+
+
+    /**
+     * Method newAccessToken
+     *
+     * @return void
+     */
+    static public function newAccessToken()
+    {
+        $consumer_key = env('MPESA_CONSUMER_KEY');
+        $consumer_secret = env('MPESA_CONSUMER_SECRET');
+        $credentials = base64_encode($consumer_key . ":" . $consumer_secret);
+        //$url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+        $url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Basic ' . $credentials, 'Content-Type:application/json')); //setting a custom header
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $curl_response = curl_exec($curl);
+        $access_token = json_decode($curl_response);
+        curl_close($curl);
+
+        return $access_token->access_token;
+    }
+
+    /**
+     * Method stkpush
+     *
+     * @param $amount $amount [explicite description]
+     * @param $new_phone $new_phone [explicite description]
+     * @param $id $id [explicite description]
+     *
+     * @return void
+     */
+    static public function stkpush($amount, $new_phone, $id)
+    {
+        $curl_post_data = [
+            'BusinessShortCode' => env('MPESA_C2B_SHORTCODE'),
+            'Password' => HelpersController::lipaNaMpesaPassword(),
+            'Timestamp' => Carbon::rawParse('now')->format('YmdHms'),
+            'TransactionType' => 'CustomerPayBillOnline',
+            'Amount' => $amount,
+            'PartyA' => $new_phone,
+            'PartyB' => env('MPESA_C2B_SHORTCODE'),
+            'PhoneNumber' => $new_phone,
+            'CallBackURL' => 'https://investornpeers.co.ke/api/mpesa/stk/push/callback/url/' . $id,
+            'AccountReference' => 'Mendza Writers System',
+            'TransactionDesc' => 'Lipa Na Mpesa',
+        ];
+        $data_string = json_encode($curl_post_data);
+        $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization:Bearer ' . HelpersController::newAccessToken())); //setting a custom header
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+
+        $curl_response = curl_exec($curl);
+        return $curl_response;
+    }
+
+
+    /**
+     * Method save_mpesa_response
+     *
+     * @param Request $request [explicite description]
+     * @param $id $id [explicite description]
+     *
+     * @return void
+     */
+    public function save_mpesa_response(Request $request, $id)
+    {
+        $feeback = $request->getContent();
+        $response = json_decode($feeback);
+    }
+
+    /**
+     * Method fetch_at_balance
+     *
+     * @return void
+     */
+    static public function fetch_at_balance()
+    {
+        $client = HelpersController::get_client();
+        $sender_id = $client->sender_id;
+        $username = $client->username; // use 'sandbox' for development in the test environment
+        $apiKey   = $client->api_key;
+        $AT       = new AfricasTalking($username, $apiKey);
+
+        // get the payments service
+        $payments = $AT->application();
+
+        try {
+            $balance = $payments->fetchApplicationData();
+            $data = $balance['data'];
+            $response = $data->UserData->balance;
+            return $response;
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 }

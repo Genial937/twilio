@@ -27,10 +27,7 @@
           <div class="col-auto">
 
             <!-- Button -->
-            <a href="#!" class="btn btn-primary lift">
-              Balance: Kes. 
-            </a>
-
+            @include('layouts.header')
           </div>
         </div> <!-- / .row -->
       </div> <!-- / .header-body -->
@@ -55,7 +52,7 @@
 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      $24,500
+                      0
                     </span>
 
                     <!-- Badge -->
@@ -89,7 +86,7 @@
 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      763.5
+                      0
                     </span>
 
                   </div>
@@ -119,7 +116,7 @@
 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      35.5%
+                      0
                     </span>
 
                   </div>
@@ -151,7 +148,7 @@
 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      2:37
+                      0
                     </span>
 
                   </div>

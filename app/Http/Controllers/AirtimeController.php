@@ -47,7 +47,7 @@ class AirtimeController extends Controller
         $contacts = Contact::where('tag_id', $tag_id)->get();
         $mobiles = [];
         foreach ($contacts as $contact) {
-            $mobiles[] =  $contact->phone;
+            $mobiles[] =  '+'.$contact->phone;
         }
         $mobile = implode(',', $mobiles);
         $recipients = [[
